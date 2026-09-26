@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REST API — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="api">
+<main>
+  <div class="container">
+    <h1 class="page-title">REST API</h1>
+    <p class="page-sub">The real backend powering this app — serverless functions on Vercel + Postgres. All requests and responses are JSON. Protected routes need <code>Authorization: Bearer <token></code>.</p>
+
+    <div class="card">
+      <h3 style="margin-bottom:10px">Endpoints</h3>
+      <div class="table-wrap" style="box-shadow:none">
+        <table>
+          <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>GET</td><td><code>/api/cars</code></td><td>—</td><td>List cars. Query: <code>city, type, seats, sort, from, to</code></td></tr>
+            <tr><td>GET</td><td><code>/api/cars/:id</code></td><td>—</td><td>Car details. 404 if unknown id</td></tr>
+            <tr><td>POST</td><td><code>/api/auth/register</code></td><td>—</td><td>Create account → 201 <code>{ token, user }</code></td></tr>
+            <tr><td>POST</td><td><code>/api/auth/login</code></td><td>—</td><td>Login → 200 <code>{ token, user }</code> / 401</td></tr>
+            <tr><td>POST</td><td><code>/api/bookings/quote</code></td><td>—</td><td>Fare quote + availability (no side effects)</td></tr>
+            <tr><td>GET</td><td><code>/api/bookings</code></td><td>✓</td><td>My bookings, newest first</td></tr>
+            <tr><td>POST</td><td><code>/api/bookings</code></td><td>✓</td><td>Create booking → 201 / 400 / 409 overlap</td></tr>
+            <tr><td>PATCH</td><td><code>/api/bookings/:ref/cancel</code></td><td>✓</td><td>Cancel a future confirmed booking</td></tr>
+            <tr><td>POST</td><td><code>/api/contact</code></td><td>—</td><td>Save a support message → 201</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 class="section-title">Try it (browser permitting)</h2>
+    <div class="card">
+      <p style="font-size:14px; margin-bottom:10px">Quick sanity check — the fleet endpoint is public:</p>
+      <pre>curl https://YOUR-DEPLOYED-URL.vercel.app/api/cars?city=delhi
+
+# login and use the token
+curl -X POST https://YOUR-DEPLOYED-URL.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"YourPass1"}'
+
+curl https://YOUR-DEPLOYED-URL.vercel.app/api/bookings \
+  -H "Authorization: Bearer <TOKEN>"</pre>
+      <p class="hint" style="margin-top:10px">Full request/response examples, status codes and validation rules are documented in the project README (GitHub).</p>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { renderNav(''); renderFooter(); });</script>
+</body>
+</html>
