@@ -1,4 +1,4 @@
-/* My Bookings — from the API */
+/* My Bookings - from the API */
 document.addEventListener('DOMContentLoaded', async () => {
   renderNav('mybookings');
   renderFooter();
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (mine.length === 0) {
         root.innerHTML = `
           <div class="empty-state card">
-            <div style="font-size:40px">🚗</div>
+            <div style="font-size:40px">\u{1F697}</div>
             <h2>No bookings yet</h2>
             <p style="color:var(--muted); margin:8px 0 18px">Find a car and make your first booking.</p>
             <a class="btn" href="cars.html" data-testid="find-car-btn">Find a Car</a>
@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td><b>${b.bookingRef}</b></td>
             <td>${b.carName}</td>
             <td>${cityName(b.city)}</td>
-            <td>${b.fromDate} → ${b.toDate}<br><span style="color:var(--muted); font-size:12px">${b.days} day${b.days === 1 ? '' : 's'}</span></td>
+            <td>${b.fromDate} \u{2192} ${b.toDate}<br><span style="color:var(--muted); font-size:12px">${b.days} day${b.days === 1 ? '' : 's'}</span></td>
             <td><b>${formatINR(b.total)}</b></td>
             <td><span class="badge ${badge}" data-testid="status-${b.bookingRef}">${b.status}</span></td>
             <td>${canCancel
               ? `<button class="btn btn-sm btn-danger cancel-btn" data-ref="${b.bookingRef}" data-testid="cancel-${b.bookingRef}">Cancel</button>`
-              : '—'}</td>
+              : '-'}</td>
           </tr>`;
       }).join('');
     } catch (err) {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     btn.disabled = true;
     try {
-      await api('/bookings/' + encodeURIComponent(ref) + '/cancel', { method: 'PATCH });
+      await api('/bookings/' + encodeURIComponent(ref) + '/cancel', { method: 'PATCH' });
       await load();
     } catch (err) {
       alert('Could not cancel: ' + err.message);
@@ -81,5 +81,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-   load();
+  load();
 });
