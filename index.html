@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DriveNow Car Rentals — Self-drive cars across India</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="home">
+<main>
+  <section class="hero">
+    <h1>Self-drive freedom, on your terms.</h1>
+    <p>Rent a car by the day in 5 cities. Transparent pricing, unlimited kilometres, free cancellation up to 24 hours before pickup.</p>
+
+    <form class="search-card" id="search-form" data-testid="home-search-form" action="cars.html" method="get">
+      <div class="search-grid">
+        <div class="field">
+          <label for="s-city">Pickup City <span class="req">*</span></label>
+          <select id="s-city" name="city" data-testid="search-city" required>
+            <option value="">Select a city</option>
+            <!-- filled by home.js -->
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-from">Pickup Date <span class="req">*</span></label>
+          <input type="date" id="s-from" name="from" data-testid="search-from" required>
+        </div>
+        <div class="field">
+          <label for="s-to">Return Date <span class="req">*</span></label>
+          <input type="date" id="s-to" name="to" data-testid="search-to" required>
+        </div>
+        <div class="field">
+          <button type="submit" class="btn" data-testid="search-submit">Search Cars</button>
+        </div>
+      </div>
+      <div class="alert alert-error" id="search-error" data-testid="search-error"></div>
+    </form>
+  </section>
+
+  <div class="container">
+    <h2 class="section-title" style="margin-top:0">Why DriveNow?</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🛣️ Unlimited Kilometres</h3>
+        <p style="color:var(--muted); font-size:13.5px">Every booking includes unlimited driving distance. No hidden per-km charges on any plan.</p>
+      </div>
+      <div class="card">
+        <h3>🧾 Transparent Pricing</h3>
+        <p style="color:var(--muted); font-size:13.5px">Daily fare plus optional add-ons. GST is shown separately on every quote before you pay.</p>
+      </div>
+      <div class="card">
+        <h3>🚫 Free Cancellation</h3>
+        <p style="color:var(--muted); font-size:13.5px">Cancel any confirmed booking free of charge until 24 hours before your pickup time.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Top-rated cars</h2>
+    <div class="card-grid" id="featured-grid" data-testid="featured-cars">
+      <!-- filled by home.js -->
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/home.js"></script>
+</body>
+</html>

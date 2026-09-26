@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find a Car — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="cars">
+<main>
+  <div class="container">
+    <h1 class="page-title">Find a Car</h1>
+    <p class="page-sub" id="context-line">Browse our fleet across 5 cities. Use the filters to narrow down your ride.</p>
+
+    <div class="toolbar" data-testid="filter-bar">
+      <div class="field">
+        <label for="f-city">City</label>
+        <select id="f-city" data-testid="filter-city">
+          <option value="">All cities</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-type">Car Type</label>
+        <select id="f-type" data-testid="filter-type">
+          <option value="">All types</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-seats">Min Seats</label>
+        <select id="f-seats" data-testid="filter-seats">
+          <option value="">Any</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="7">7+</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-sort">Sort By</label>
+        <select id="f-sort" data-testid="filter-sort">
+          <option value="rating">Rating (high to low)</option>
+          <option value="price-asc">Price (low to high)</option>
+          <option value="price-desc">Price (high to low)</option>
+      </select>
+      </div>
+      <div class="field">
+        <button class="btn btn-secondary" id="f-reset" data-testid="filter-reset" type="button">Reset</button>
+      </div>
+    </div>
+
+    <div class="alert alert-info" id="dates-note" data-testid="dates-note"></div>
+    <p class="result-meta" id="result-meta" data-testid="result-count"></p>
+
+    <div id="car-grid" class="card-grid" data-testid="car-grid">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+
+    <div class="pagination" id="pagination" data-testid="pagination"></div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/cars-page.js"></script>
+</body>
+</html>
