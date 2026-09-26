@@ -76,11 +76,11 @@ function printTable(rows, fields) {
 
 const HELP = [
   'Commands:',
-  '  \dt            list all tables',
-  '  \d <table>     describe a table (columns + types)',
-  '  \dv            list views',
-  '  \q             quit',
-  '  \?             this help',
+  '  \\dt            list all tables',
+  '  \\d <table>     describe a table (columns + types)',
+  '  \\dv            list views',
+  '  \\q             quit',
+  '  \\?             this help',
   '',
   'Type any SQL ending with a semicolon. Example:',
   "  SELECT * FROM cars WHERE 'mumbai' = ANY(cities);"
@@ -88,19 +88,19 @@ const HELP = [
 
 async function handle(db, sql) {
   sql = sql.trim();
-  if (sql === '\dt') {
+  if (sql === '\\dt') {
     const r = await db.query(
       "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY 1");
     r.rows.forEach(x => console.log(' ' + x.table_name));
     return;
   }
-  if (sql === '\dv') {
+  if (sql === '\\dv') {
     const r = await db.query(
       "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='VIEW' ORDER BY 1");
     r.rows.forEach(x => console.log(' ' + x.table_name));
     return;
   }
-  if (sql.startsWith('\d ')) {
+  if (sql.startsWith('\\d ')) {
     const t = sql.slice(3).trim().replace(/;$/, '');
     const r = await db.query(
       "SELECT column_name, data_type, is_nullable FROM information_schema.columns " +
@@ -126,7 +126,7 @@ async function main() {
     await db.end();
     return;
   }
-  console.log('Type \? for help, \q to quit.\n');
+  console.log('Type \\? for help, \\q to quit.\n');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout, prompt: 'drivenow=# ' });
   rl.prompt();
   let buffer = '';
@@ -156,8 +156,8 @@ async function main() {
 
   rl.on('line', (line) => {
     const t = line.trim();
-    if (buffer === '' && (t === '\q' || t === 'exit' || t === 'quit')) { rl.close(); return; }
-    if (buffer === '' && (t === '\?' || t === 'help')) { console.log(HELP); rl.prompt(); return; }
+    if (buffer === '' && (t === '\\q' || t === 'exit' || t === 'quit')) { rl.close(); return; }
+    if (buffer === '' && (t === '\\?' || t === 'help')) { console.log(HELP); rl.prompt(); return; }
     if (buffer === '' && t.startsWith('\\') && t.length > 1) {
       // backslash commands (\dt, \d table, \dv) run immediately, no semicolon needed
       submit(t);
