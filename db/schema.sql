@@ -8,11 +8,11 @@ CREATE TABLE IF NOT EXISTS users (
   phone         VARCHAR(10)  NOT NULL,
   city          VARCHAR(20)  NOT NULL,
   password_hash TEXT         NOT NULL,
-  created_at    TIMESTAMPZ NOT NULL DEFAULT NOW()
+  created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS cars (
-  id          VARCHAR(20) PRIMARY KEY,
+  id           VARCHAR(20) PRIMARY KEY,
   brand        VARCHAR(50)  NOT NULL,
   model        VARCHAR(50)  NOT NULL,
   type         VARCHAR(20)  NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   car_id       VARCHAR(20)  NOT NULL REFERENCES cars(id),
   city         VARCHAR(20)  NOT NULL,
   from_date    DATE         NOT NULL,
-  to_date      DATE          NOT NULL,
-  days         INT           NOT NULL,
-  extras        TEXT[]        NOT NULL DEFAULT '{}',
+  to_date      DATE         NOT NULL,
+  days         INT          NOT NULL,
+  extras       TEXT[]        NOT NULL DEFAULT '{}',
   coupon       VARCHAR(20)  NOT NULL DEFAULT '',
   base         INT          NOT NULL,
   extras_total INT          NOT NULL,
@@ -50,28 +50,27 @@ CREATE TABLE IF NOT EXISTS messages (
   name       VARCHAR(100) NOT NULL,
   email      VARCHAR(255) NOT NULL,
   message    TEXT         NOT NULL,
-  created_at TIMESTAMPZ NOT NULL DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_car_status_dates ON bookings (car_id, status, from_date, to_date);
-CREATE INDEX IF NO EXISTS idx_bookings_user ON bookings (user_id, booked_at DESC);
+CREATE INDEX IF NOT EXISTS idx_bookings_user ON bookings (user_id, booked_at DESC);
 
 INSERT INTO cars (id, brand, model, type, seats, fuel, transmission, price_per_day, cities, color, rating, trips) VALUES
-  ('CAR-101', 'Maruti Suzuki', 'Swift',        'Hatchback', 5, 'Petrol', 'Manual',    1800, ARRAY['diservaipur'],
-  ('CAR-102', 'Hyundai',         'i20',          'Hatchback', 5, 'Petrol', 'Manual',    2100, ARRAY['mKumbai'],                 '#3498db', 4.3, 268),
-  ('CAR-103', 'Tata',            'Tiigo',        'Hatchback', 4, 'CNG',    'Manual',    1500, ARRAY['jaipur'],           '#2ecc71', 4.1, 190),
-  ('CAR-104', 'Maruti Suzuki',  'Baleno',       'Hatchback', 5, 'Petrol', 'AMT',       1950, ARRAY['bangalore'],           '#9b59b6', 4.4, 245),
-  ('CAR-105', 'Honda',          'City',          'Sedan',     5, 'Petrol', 'CVT',       2500, ARRAY['mKumbai'],            '#34495e', 4.6, 421),
-  ('CAR-106', 'Hyundai',        'Verna',         'Sedan',     5, 'Petrol', 'Automatic', 2800, ARRAY['kamaikumbai'],               '#e67e22', 4.4, 301),
-  ('CAR-107', 'Skoda',         'Octavia',     'Sedan',     5, 'Petrol', 'DCT',       3900, ARRAY['mKumbai'],                 '#1abc9c', 4.7, 154),
-  ('CAR-108', 'Maruti Suzuki',  'Dzire',        'Sedan',   5, 'Petrol', 'AMT',        2000, ARRAY['diservaipur'],                  '#95a5a6', 4.2, 389),
-  ('CAR-109', 'Tata',           'Nexon,       'SUV',       5, 'Diesel', 'Manual',    2800, ARRAY['mKumbai'],                 '#2980b9', 4.6, 356),
-  ('CAR-110', 'Mahindra',       'Thar',         'SUV',       4, 'Diesel', 'Automatic', 3200, ARRAY['jaipur'],                  '#c0392b', 4.8, 275)
+  ('CAR-101', 'Maruti Suzuki', 'Swift',        'Hatchback', 5, 'Petrol', 'Manual',    1800, ARRAY['delhi','jaipur'],            '#e74c3c', 4.5, 312),
+  ('CAR-102', 'Hyundai',        'i20',          'Hatchback', 5, 'Petrol', 'Manual',    2100, ARRAY['delhi','mumbai'],           '#3498db', 4.3, 268),
+  ('CAR-103', 'Tata',           'Tiago',        'Hatchback', 4, 'CNG',    'Manual',    1500, ARRAY['jaipur','pune'],           '#2ecc71', 4.1, 190),
+  ('CAR-104', 'Maruti Suzuki',  'Baleno',       'Hatchback', 5, 'Petrol', 'AMT',       1950, ARRAY['delhi','pune'],           '#9b59b6', 4.4, 245),
+  ('CAR-105', 'Honda',          'City',         'Sedan',     5, 'Petrol', 'CVT',       2500, ARRAY['delhi','bangalore'],       '#34495e', 4.6, 421),
+  ('CAR-106', 'Hyundai',        'Verna',        'Sedan',     5, 'Petrol', 'Automatic', 2800, ARRAY['mumbai'],                  '#e67e22', 4.4, 301),
+  ('CAR-107', 'Skoda',          'Octavia',      'Sedan',     5, 'Petrol', 'DCT',       3900, ARRAY['bangalore'],               '#1abc9c', 4.7, 154),
+  ('CAR-108', 'Maruti Suzuki',  'Dzire',        'Sedan',     5, 'Petrol', 'AMT',       2000, ARRAY['delhi','jaipur','pune'],  '#95a5a6', 4.2, 389),
+  ('CAR-109', 'Tata',           'Nexon',        'SUV',       5, 'Diesel', 'Manual',    2800, ARRAY['delhi','bangalore'],       '#2980b9', 4.6, 356),
+  ('CAR-110', 'Mahindra',       'Thar',         'SUV',       4, 'Diesel', 'Automatic', 3200, ARRAY['jaipur'],                  '#c0392b', 4.8, 275),
   ('CAR-111', 'Toyota',         'Fortuner',     'SUV',       7, 'Diesel', 'Automatic', 5500, ARRAY['delhi','mumbai'],         '#16a085', 4.9, 488),
-  ('CAR-112', 'Hyundai',        'Creta',        'SUV',        5, 'Petrol', 'Automatic', 3300, ARRAY['bangalore'],          '#d35400', 4.7, 402),
-  ('CAR-113', 'Mahindra',       'XUV700',        'SUV',       7, 'Diesel', 'Automatic', 4200, ARRAY['mumbai'],            '#2c3e50', 4.8, 198),
-  ('CAR-114', 'Toyota',         'Innova Crysta', 'MPV',       7, 'Diesel', 'Manual',    3600, ARRAY['mumbai'],               '#7f8c8d', 4.8, 517),
-  ('CAR-115', 'BMW',              '3 Series',    'Luxury',    5, 'Petrol', 'Automatic', 9500, ARRAY['delhi'],                  '#27ae60', 4.9, 96),
-  ('CAR-116', 'Audi',           'A4',           'Luxury',    5, 'Petrol', 'Automatic', 8900, ARRAY['kamokata'],                '#f1c40f', 4.7, 81);
-
-CREATE INDEX IF NOT EXISTS idx_cars_brand_model ON cars (brand, model);
+  ('CAR-112', 'Hyundai',        'Creta',        'SUV',       5, 'Petrol', 'Automatic', 3300, ARRAY['bangalore','pune'],      '#d35400', 4.7, 402),
+  ('CAR-113', 'Mahindra',       'XUV700',       'SUV',       7, 'Diesel', 'Automatic', 4200, ARRAY['mumbai','bangalore'],    '#2c3e50', 4.8, 198),
+  ('CAR-114', 'Toyota',         'Innova Crysta', 'MPV',       7, 'Diesel', 'Manual',    3600, ARRAY['mumbai','pune','delhi'],  '#7f8c8d', 4.8, 517),
+  ('CAR-115', 'BMW',            '3 Series',     'Luxury',    5, 'Petrol', 'Automatic', 9500, ARRAY['delhi'],                  '#27ae60', 4.9, 96),
+  ('CAR-116', 'Audi',           'A4',           'Luxury',    5, 'Petrol', 'Automatic', 8900, ARRAY['bangalore'],               '#f1c40f', 4.7, 81)
+ON CONFLICT (id) DO NOTHING;
