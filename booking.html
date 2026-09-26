@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Your Car — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="booking">
+<main>
+  <div class="container container-narrow">
+    <h1 class="page-title">Complete Your Booking</h1>
+    <p class="page-sub" id="booking-car-line">—</p>
+
+    <div class="wizard-steps" data-testid="wizard-steps">
+      <div class="wizard-step active" data-step="1" data-testid="wizard-step-1">1. Trip Details</div>
+      <div class="wizard-step" data-step="2" data-testid="wizard-step-2">2. Add-ons</div>
+      <div class="wizard-step" data-step="3" data-testid="wizard-step-3">3. Review & Pay</div>
+    </div>
+
+    <div class="alert alert-error" id="booking-page-error" data-testid="booking-page-error"></div>
+
+    <!-- STEP 1 -->
+    <div class="step-panel active card" id="step-1">
+      <form id="trip-form" novalidate>
+        <div class="field">
+          <label for="b-city">Pickup City <span class="req">*</span></label>
+          <select id="b-city" data-testid="booking-city">
+            <option value="">Select a city</option>
+          </select>
+          <p class="error">Please select a pickup city.</p>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="b-from">Pickup Date <span class="req">*</span></label>
+            <input type="date" id="b-from" data-testid="booking-from">
+            <p class="error" id="err-from"></p>
+          </div>
+          <div class="field">
+            <label for="b-to">Return Date <span class="req">*</span></label>
+            <input type="date" id="b-to" data-testid="booking-to">
+            <p class="error" id="err-to"></p>
+          </div>
+        </div>
+        <p class="hint" id="rental-days-line" data-testid="rental-days-line">Maximum rental duration is 30 days.</p>
+        <button type="submit" class="btn btn-block" data-testid="to-step-2">Continue to Add-ons</button>
+      </form>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel card" id="step-2">
+      <h3 style="margin-bottom:14px">Optional add-ons</h3>
+      <div id="extras-list"></div>
+      <div class="wizard-actions">
+        <button class="btn btn-secondary" id="back-1" data-testid="back-to-1" type="button">&larr; Back</button>
+        <button class="btn" id="to-3" data-testid="to-step-3" type="button">Continue to Review</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-panel card" id="step-3">
+      <h3 style="margin-bottom:14px">Review your booking</h3>
+      <div class="table-wrap" style="box-shadow:none; margin-bottom:18px">
+        <table data-testid="review-table">
+          <tr><td>Car</td><td><b id="r-car">—</b></td></tr>
+          <tr><td>City</td><td><b id="r-city">—</b></td></tr>
+          <tr><td>Pickup / Return</td><td><b id="r-dates">—</b> <span id="r-days" style="color:var(--muted); font-weight:400"></span></td></tr>
+          <tr><td>Add-ons</td><td><b id="r-extras">—</b></td></tr>
+        </table>
+      </div>
+
+      <div class="field">
+        <label for="b-coupon">Coupon Code (optional)</label>
+        <input type="text" id="b-coupon" placeholder="e.g. DRIVE10" data-testid="coupon-input" maxlength="20">
+        <p class="hint">DRIVE10 gives 10% off the base fare, up to a maximum discount of ₹500.</p>
+        <p class="error" id="coupon-error" style="display:none; color:var(--danger); font-size:12.5px"></p>
+      </div>
+      <button class="btn btn-secondary btn-sm" id="apply-coupon" data-testid="apply-coupon" type="button">Apply Coupon</button>
+
+      <div class="fare-summary" id="fare-summary" style="margin:20px 0">
+        <div class="fare-row"><span>Base fare</span><span id="f-base" data-testid="fare-base">—</span></div>
+        <div class="fare-row"><span>Add-ons</span><span id="f-extras" data-testid="fare-extras">—</span></div>
+        <div class="fare-row discount"><span>Coupon discount</span><span id="f-discount" data-testid="fare-discount">—</span></div>
+        <div class="fare-row"><span>GST (18%)</span><span id="f-gst" data-testid="fare-gst">—</span></div>
+        <div class="fare-row total"><span>Total payable</span><span id="f-total" data-testid="fare-total">—</span></div>
+      </div>
+
+      <h3 style="margin:22px 0 10px">Payment details</h3>
+      <form id="payment-form" novalidate>
+        <div class="field">
+          <label for="p-name">Name on Card <span class="req">*</span></label>
+          <input type="text" id="p-name" placeholder="As printed on the card" data-testid="payment-name">
+          <p class="error">Please enter the name on the card.</p>
+        </div>
+        <div class="field">
+          <label for="p-card">Card Number <span class="req">*</span></label>
+          <input type="text" id="p-card" inputmode="numeric" placeholder="16-digit card number" maxlength="16" data-testid="payment-card">
+          <p class="error" id="err-card"></p>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="p-exp">Expiry (MM/YY) <span class="req">*</span></label>
+            <input type="text" id="p-exp" placeholder="MM/YY" maxlength="5" data-testid="payment-expiry">
+            <p class="error" id="err-exp"></p>
+          </div>
+          <div class="field">
+            <label for="p-cvv">CVE <span class="req">*</span></label>
+            <input type="password" id="p-cvv" inputmode="numeric" maxlength="3" placeholder="3 digits" data-testid="payment-cvv">
+            <p class="error">CVV must be exactly 3 digits.</p>
+          </div>
+        </div>
+        <p class="hint" style="margin-bottom:14px">🔒 Demo checkout — no real payment is processed and no card data is stored.</p>
+        <div class="wizard-actions">
+          <button class="btn btn-secondary" id="back-2" data-testid="back-to-2" type="button">&larr; Back</button>
+          <button type="submit" class="btn" id="pay-btn" data-testid="pay-now">Pay & Confirm Booking</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- CONFIRMATION -->
+    <div class="step-panel card" id="step-confirm">
+      <div class="confirm-hero">
+        <div class="tick">✅</div>
+        <h2>Booking Confirmed!</h2>
+        <p style="color:var(--muted)">Your booking reference is</p>
+        <div class="ref-code" id="confirm-ref" data-testid="booking-ref">—</div>
+        <p style="color:var(--muted); margin-bottom:20px">A confirmation has been sent to <b id="confirm-email" data-testid="confirm-email">—</b></p>
+        <div class="fare-summary" style="text-align:left; margin-bottom:22px">
+          <div class="fare-row"><span id="c-car">—</span><span></span></div>
+          <div class="fare-row"><span id="c-dates">—</span><span id="c-total" data-testid="confirm-total">—</span></div>
+        </div>
+        <a class="btn" href="mybookings.html" data-testid="go-to-bookings">View My Bookings</a>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/booking-page.js"></script>
+</body>
+</html>

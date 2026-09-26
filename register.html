@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="register">
+<main>
+  <div class="container container-narrow">
+    <h1 class="page-title">Create your account</h1>
+    <p class="page-sub">One minute to sign up, then book any car in the fleet.</p>
+
+    <div class="card">
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="r-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="r-name" data-testid="register-name" placeholder="Your full name">
+          <p class="error">Please enter your full name (at least 3 characters).</p>
+        </div>
+        <div class="field">
+          <label for="r-email">Email <span class="req">*</span></label>
+          <input type="email" id="r-email" data-testid="register-email" placeholder="you@example.com">
+          <p class="error" id="err-reg-email">Please enter a valid email address.</p>
+        </div>
+        <div class="field">
+          <label for="r-phone">Mobile Number <span class="req">*</span></label>
+          <input type="tel" id="r-phone" data-testid="register-phone" placeholder="10-digit mobile number" maxlength="10">
+          <p class="error">Mobile number must be exactly 10 digits (numbers only).</p>
+        </div>
+        <div class="field">
+          <label for="r-city">Home City <span class="req">*</span></label>
+          <select id="r-city" data-testid="register-city">
+            <option value="">Select your city</option>
+          </select>
+          <p class="error">Please select your home city.</p>
+        </div>
+        <div class="field">
+          <label for="r-pass">Password <span class="req">*</span></label>
+          <input type="password" id="r-pass" data-testid="register-password" placeholder="Create a password" autocomplete="new-password">
+          <p class="error">Password must be at least 8 characters and contain an uppercase letter and a number.</p>
+        </div>
+        <div class="field">
+          <label for="r-confirm">Confirm Password <span class="req">*</span></label>
+          <input type="password" id="r-confirm" data-testid="register-confirm" placeholder="Re-enter password" autocomplete="new-password">
+          <p class="error">Passwords do not match.</p>
+        </div>
+        <button type="submit" class="btn btn-block" data-testid="register-submit">Create Account</button>
+      </form>
+
+      <div class="alert alert-error" id="reg-error" data-testid="register-error"></div>
+      <div class="alert alert-success" id="reg-success" data-testid="register-success">Account created successfully! Redirecting to login…</div>
+
+      <hr class="divider">
+      <p style="font-size:14px; text-align:center">Already have an account? <a href="login.html" data-testid="goto-login">Log in</a></p>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/auth.js"></script>
+</body>
+</html>

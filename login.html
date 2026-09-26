@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="login">
+<main>
+  <div class="container container-narrow">
+    <h1 class="page-title">Welcome back</h1>
+    <p class="page-sub">Log in to manage your bookings.</p>
+
+    <div class="card">
+      <div class="alert alert-success" id="reg-notice" data-testid="reg-notice">Account created successfully. Please log in.</div>
+      <div class="alert alert-error" id="login-error" data-testid="login-error">Invalid email or password.</div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="l-email">Email <span class="req">*</span></label>
+          <input type="email" id="l-email" data-testid="login-email" placeholder="you@example.com" autocomplete="username">
+          <p class="error">Please enter a valid email address.</p>
+        </div>
+        <div class="field">
+          <label for="l-password">Password <span class="req">*</span></label>
+          <input type="password" id="l-password" data-testid="login-password" placeholder="Your password" autocomplete="current-password">
+          <p class="error">Please enter your password.</p>
+        </div>
+        <button type="submit" class="btn btn-block" data-testid="login-submit">Log In</button>
+      </form>
+
+      <hr class="divider">
+      <p style="font-size:14px; text-align:center">New to DriveNow? <a href="register.html" data-testid="goto-register">Create an account</a></p>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/auth.js"></script>
+</body>
+</html>
