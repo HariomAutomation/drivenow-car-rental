@@ -56,6 +56,17 @@ npm run dev          # starts Postgres + schema + app at http://localhost:3000
 This uses `local/dev.js` (a bundled embedded PostgreSQL) plus `local/server.js`
 (a Node harness that serves the frontend and the same `/api` functions Vercel runs).
 
+### Practice SQL against the local database
+```bash
+npm run sql
+```
+Opens an interactive SQL shell (`local/sql.js`) on the same embedded PostgreSQL
+(database `drivenow`, port 5433). Type SQL ending with `;`, or use psql-style
+commands: `\dt` (tables), `\d cars` (describe), `\q` (quit). A guided learning
+path with QA-focused DB-validation queries is in [SQL-PRACTICE.md](SQL-PRACTICE.md).
+GUI alternative: connect DBeaver/pgAdmin to localhost:5433, db `drivenow`, user
+`postgres`, no password.
+
 ### Run locally (against Supabase, via Vercel CLI)
 ```bash
 npm install -g vercel
