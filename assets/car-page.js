@@ -67,4 +67,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 function renderNotFound(root) {
   root.innerHTML = `
     <div class="empty-state card">
-      <div style="font-size:40px">ÃŸÃ¸/HÙ]‚ˆHÛ\ÜÏHœYÙK]]HØ\ˆ›Ý›Ý[™ÚO‚ˆÛ\ÜÏHœYÙK\ÝXˆ•HØ\ˆ[ÝIÜ™HÛÚÚ[™È›ÜˆÙ\Û‰Ý^\ÝÜ‚ˆHÛ\ÜÏH˜ˆˆ™YH˜Ø\œËš[ˆ]K]\ÝYH˜˜XÚË]ËXØ\œÈœ›ÝÜÙH[Ø\œÏØO‚ˆÙ]˜ÂŸB
+      <div style="font-size:40px">ÃŸÃ¸?HÙ]‚ˆHÛ\ÜÏHœYÙK]]HØ\ˆ›Ý›Ý[™ÚO‚ˆÛ\ÜÏHœYÙK\ÝXˆ•HØ\ˆ[ÝIÜ™HÛÚÚ[™È›ÜˆÙ\Û‰Ý^\ÝÜ‚ˆHÛ\ÜÏH˜ˆˆ™YH˜Ø\œËš[ˆ]K]\ÝYH˜˜XÚË]ËXØ\œÈœ›ÝÜÙH[Ø\œÏØO‚ˆÙ]˜ÂŸB
