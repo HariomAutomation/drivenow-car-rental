@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="about">
+<main>
+  <div class="container">
+    <h1 class="page-title">About DriveNow</h1>
+    <p class="page-sub">Self-drive car rentals, made simple.</p>
+
+    <div class="card">
+      <p style="font-size:15px; margin-bottom:14px">
+        DriveNow is a self-drive car rental service operating across Delhi NCR, Mumbai, Bengaluru, Pune and Jaipur.
+        We believe renting a car should be as easy as booking a cab — pick your city, choose your dates, and drive away.
+      </p>
+      <ul class="feature-list" style="font-size:14px; margin-bottom:14px">
+        <li><b>16 cars</b> across 5 categories — hatchbacks, sedans, SUVs, MPVs and luxury</li>
+        <li><b>Unlimited kilometres</b> on every booking, no hidden charges</li>
+        <li><b>Transparent fares</b> — GST and add-ons always shown before payment</li>
+        <li><b>Free cancellation</b> until 24 hours before pickup</li>
+      </ul>
+      <p class="hint">Note: DriveNow is a demo product built for software QA practice. No real cars, payments or accounts are involved.</p>
+    </div>
+
+    <h2 class="section-title">How it works</h2>
+    <div class="card-grid">
+      <div class="card"><h3>1. Search</h3><p style="color:var(--muted); font-size:13.5px">Pick your city and dates on the home page. Cars already booked for those dates are automatically hidden.</p></div>
+      <div class="card"><h3>2. Book</h3><p style="color:var(--muted); font-size:13.5px">Choose add-ons, apply a coupon if you have one, review the full fare breakdown, and pay (demo checkout).</p></div>
+      <div class="card"><h3>3. Drive</h3><p style="color:var(--muted); font-size:13.5px">Get your booking reference instantly. Manage or cancel your booking any time from My Bookings.</p></div>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { renderNav('about'); renderFooter(); });</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bookings — DriveNow</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="mybookings">
+<main>
+  <div class="container">
+    <h1 class="page-title">My Bookings</h1>
+    <p class="page-sub">All your DriveNow bookings in one place. Free cancellation until 24 hours before pickup.</p>
+
+    <div id="bookings-root">
+      <div class="table-wrap">
+        <table data-testid="bookings-table">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Car</th>
+              <th>City</th>
+              <th>Dates</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/mybookings-page.js"></script>
+</body>
+</html>
