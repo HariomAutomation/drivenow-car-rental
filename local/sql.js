@@ -64,7 +64,7 @@ function printTable(rows, fields) {
     if (v === null || v === undefined) return 'NULL';
     if (v instanceof Date) return v.toISOString().replace('T', ' ').slice(0, 19);
     return String(v);
-  JT9;
+  }));
   const widths = cols.map((c, i) => Math.max(c.length, ...vals.map(r => r[i].length)));
   const sep = '+' + widths.map(w => '-'.repeat(w + 2)).join('+') + '+';
   const head = '| ' + cols.map((c, i) => c.padEnd(widths[i])).join(' | ') + ' |';
@@ -79,8 +79,8 @@ const HELP = [
   '  \\dt            list all tables',
   '  \\d <table>     describe a table (columns + types)',
   '  \\dv            list views',
-  '  \\q             quit',
-  '  \\?             this help',
+  '  \\q            quit',
+  '  \\?            this help',
   '',
   'Type any SQL ending with a semicolon. Example:',
   "  SELECT * FROM cars WHERE 'mumbai' = ANY(cities);"
