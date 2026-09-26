@@ -1,10 +1,10 @@
-/* Login + Register — real API auth */
+/* Login + Register - real API auth */
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.body.dataset.page;
   renderNav(page);
   renderFooter();
 
-  /* ---------------- LOGIN ----------------- */
+  /* ---------------- LOGIN ---------------- */
   if (page === 'login') {
     if (getAuth()) { location.href = 'mybookings.html'; return; }
 
@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
           errBox.textContent = 'Something went wrong. Please try again.';
           errBox.classList.add('show');
       }
-      }
-    });
+    }
+  });
   }
 
-  /* ---------------- REGISTER ---------------- */
+  /* ----------------- REGISTER --------------- */
   if (page === 'register') {
     const citySel = document.getElementById('r-city');
     CITIES.forEach(c => {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const el = document.getElementById('err-reg-email');
           el.textContent = err.message;
           el.closest('.field').classList.add('invalid');
-        } else {
+      } else {
           errBox.textContent = err.message || 'Registration failed. Please try again.';
           errBox.classList.add('show');
         }
