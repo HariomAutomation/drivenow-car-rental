@@ -1,4 +1,4 @@
-/* Car detail page â€” car data from the API */
+/* Car detail page - car data from the API */
 document.addEventListener('DOMContentLoaded', async () => {
   renderNav('cars');
   renderFooter();
@@ -15,12 +15,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  const emoji = ({ Hatchback: 'ğŸš—', Sedan: 'ğŸš™', SUV: 'ğŸš', MPV: 'ğŸš', Luxury: 'ğŸï¸' }[car.type] || 'ğŸš—');
+  const emoji = ({ Hatchback: '\u{1F697}', Sedan: '\u{1F699}', SUV: '\u{1F690}', MPV: '\u{1F690}', Luxury: '\u{1F3CE}' }[car.type] || '\u{1F697}');
 
   root.innerHTML = `
     <p><a href="cars.html">&larr; Back to all cars</a></p>
-    <h1 class="page-title" style="margin-top:10px">${car.brand} ${car.model} <span class="rating">â­ ${car.rating}</span></h1>
-    <p class="page-sub">${car.type} â€¢ driven by ${car.trips}+ customers</p>
+    <h1 class="page-title" style="margin-top:10px">${car.brand} ${car.model} <span class="rating">\u{2B50} ${car.rating}</span></h1>
+    <p class="page-sub">${car.type} \u{2022} driven by ${car.trips}+ customers</p>
 
     <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap:24px; align-items:start" class="detail-grid">
       <div class="card" style="padding:0; overflow:hidden">
@@ -53,18 +53,23 @@ document.addEventListener('DOMContentLoaded', async () => {
           <h3>Included with every rental</h3>
           <ul class="feature-list" style="font-size:13.5px">
             <li>Unlimited kilometres</li>
-            <li>24Ã—7 roadside assistance</li>
+            <li>24\u{00D7}7 roadside assistance</li>
             <li>Sanitised car before every trip</li>
-        </ul>
+          </ul>
         </div>
       </div>
     </div>
 
-    <style>@media (max-width: 778px) { .detail-grid { grid-template-columns: 1fr !important; } }</style>
+    <style>@media (max-width: 780px) { .detail-grid { grid-template-columns: 1fr !important; } }</style>
   `;
 });
 
 function renderNotFound(root) {
   root.innerHTML = `
     <div class="empty-state card">
-      <div style="font-size:40px">ÃŸÃ¸?HÙ]‚ˆHÛ\ÜÏHœYÙK]]HØ\ˆ›İ›İ[™ÚO‚ˆÛ\ÜÏHœYÙK\İXˆ•HØ\ˆ[İIÜ™HÛÚÚ[™È›ÜˆÙ\Û‰İ^\İÜ‚ˆHÛ\ÜÏH˜ˆˆ™YH˜Ø\œËš[ˆ]K]\İYH˜˜XÚË]ËXØ\œÈœ›İÜÙH[Ø\œÏØO‚ˆÙ]˜ÂŸB
+      <div style="font-size:40px">\u{1F6AB}</div>
+      <h1 class="page-title">Car not found</h1>
+      <p class="page-sub">The car you're looking for doesn't exist.</p>
+      <a class="btn" href="cars.html" data-testid="back-to-cars">Browse all cars</a>
+    </div>`;
+}
