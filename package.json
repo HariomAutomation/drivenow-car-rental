@@ -1,13 +1,14 @@
 {
   "name": "drivenow-fullstack",
   "version": "1.0.0",
-  "description": "DriveNow Car Rentals — full-stack app (static frontend + Vercel serverless API + Postgres)",
+  "description": "DriveNow Car Rentals - full-stack app (static frontend + Vercel serverless API + Postgres)",
   "private": true,
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "dev": "node local/dev.js"
+    "dev": "node local/dev.js",
+    "sql": "node local/sql.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
