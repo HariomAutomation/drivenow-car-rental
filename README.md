@@ -40,7 +40,7 @@ git push -u origin main
 
 ### 3. Deploy on Vercel
 1. https://vercel.com -> **Continue with GitHub** -> **Add New -> Project** -> import the `drivenow` repo.
-2. Framework preset: **Other** (no build settings needed).
+2. Framework preset: **Other** (no build settings needed - `vercel.json` in the repo already wires up the static pages + `/api` serverless functions).
 3. **Environment Variables** - add:
    - `DATABASE_URL` = the Supabase URI from step 1
    - `JWT_SECRET` = any long random string (e.g. run `openssl rand -hex 32`)
