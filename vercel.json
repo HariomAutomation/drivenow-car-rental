@@ -4,9 +4,5 @@
     { "src": "api/**/*.js", "use": "@vercel/node" },
     { "src": "assets/**", "use": "@vercel/static" },
     { "src": "*.html", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/404.html", "status": 404 }
   ]
 }
