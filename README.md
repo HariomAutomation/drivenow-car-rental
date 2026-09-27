@@ -111,13 +111,14 @@ Token: JWT, expires in **24h**. Send as `Authorization: Bearer <token>`.
 -> `400` invalid dates/carId | `404` unknown car
 
 ### `GET /api/bookings` (auth)
--> `200 { "total": n, "bookings": [ { "bookingRef": "DT-XXXXXX", "carId": "CAR-111", "carName": "Toyota Fortuner", "city": "delhi", "fromDate": "...", "toDate": "...", "days": 3, "extras": ["gps"], "coupon": "DRIVE10", "base": 16500, "extrasTotal": 749, "discount": 500, "gst": 3002, "total": 19751, "status": "CONFIRMED", "bookedAt": "..." } ] }` | `401` no/invalid token
+-> `200 { "total": n, "bookings": [ { "bookingRef": "DT-XXXXXX", "carId": "CAR-111", "carName": "Toyota Fortuner", "city": "delhi", "fromDate": "...", "toDate": "...", "days": 3, "extras": ["gps"], "coupon": "DRIVE10", "base": 16500, "extrasTotal": 749, "discount": 500, "gst": 3002, "total": 19751, "paymentMethod": "cash", "status": "CONFIRMED", "bookedAt": "..." } ] }` | `401` no/invalid token
 
 ### `POST /api/bookings` (auth)
 ```json
-{ "carId": "CAR-111", "city": "delhi", "fromDate": "2026-10-05", "toDate": "2026-10-08", "extras": ["gps"], "coupon": "DRIVE10" }
+{ "carId": "CAR-111", "city": "delhi", "fromDate": "2026-10-05", "toDate": "2026-10-08", "extras": ["gps"], "coupon": "DRIVE10", "paymentMethod": "cash" }
 ```
--> `201 { "booking": {...} }` (includes server-computed `total`)
+`paymentMethod` is optional: `card` (default) or `cash` (pay at pickup). Any other value -> `400`.
+-> `201 { "booking": {...} }` (includes server-computed `total` and `paymentMethod`)
 -> `400` validation (past date, >30 days, city not offered, invalid coupon...) | `401` | `404` car | `409` **car already booked for overlapping dates**
 
 ### `PATCH /api/bookings/:ref/cancel` (auth)
@@ -136,6 +137,7 @@ Token: JWT, expires in **24h**. Send as `Authorization: Bearer <token>`.
 - **Overlapping bookings**: one CONFIRMED booking per car per date range; a second overlapping booking -> `409`. Cancelling frees the dates again.
 - **Cancellation**: only own bookings, only `CONFIRMED`, only before the pickup date
 - **Coupon**: `DRIVE10` (case-insensitive); invalid coupon rejected with `400` on booking creation
+- **Payment method**: `card` (default) or `cash` (pay at pickup); anything else -> `400`. Cash skips all card-field validation on the UI; the server stores `payment_method` on the booking row
 
 ## QA workflow for your portfolio
 
