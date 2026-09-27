@@ -88,6 +88,24 @@
       <h3 style="margin:22px 0 10px">Payment details</h3>
       <form id="payment-form" novalidate>
         <div class="field">
+          <label>Payment Method <span class="req">*</span></label>
+          <label class="checkbox-row" for="pm-card">
+            <input type="radio" name="payment-method" id="pm-card" value="card" checked data-testid="payment-method-card">
+            <span>
+              <b>Card</b> - pay now (online)
+              <br><span class="sub">Credit / debit card, processed instantly.</span>
+            </span>
+          </label>
+          <label class="checkbox-row" for="pm-cash">
+            <input type="radio" name="payment-method" id="pm-cash" value="cash" data-testid="payment-method-cash">
+            <span>
+              <b>Cash</b> - pay at pickup
+              <br><span class="sub">No card needed. Pay the total amount in cash when you collect the car.</span>
+            </span>
+          </label>
+        </div>
+        <div id="card-fields">
+        <div class="field">
           <label for="p-name">Name on Card <span class="req">*</span></label>
           <input type="text" id="p-name" placeholder="As printed on the card" data-testid="payment-name">
           <p class="error">Please enter the name on the card.</p>
@@ -110,6 +128,7 @@
           </div>
         </div>
         <p class="hint" style="margin-bottom:14px">&#128274; Demo checkout - no real payment is processed and no card data is stored.</p>
+        </div>
         <div class="wizard-actions">
           <button class="btn btn-secondary" id="back-2" data-testid="back-to-2" type="button">&larr; Back</button>
           <button type="submit" class="btn" id="pay-btn" data-testid="pay-now">Pay & Confirm Booking</button>

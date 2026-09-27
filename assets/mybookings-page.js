@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="table-wrap">
           <table data-testid="bookings-table">
             <thead>
-              <tr><th>Reference</th><th>Car</th><th>City</th><th>Dates</th><th>Total</th><th>Status</th><th>Action</th></tr>
+              <tr><th>Reference</th><th>Car</th><th>City</th><th>Dates</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr>
             </thead>
             <tbody id="bookings-tbody"></tbody>
           </table>
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <td>${cityName(b.city)}</td>
             <td>${b.fromDate} \u{2192} ${b.toDate}<br><span style="color:var(--muted); font-size:12px">${b.days} day${b.days === 1 ? '' : 's'}</span></td>
             <td><b>${formatINR(b.total)}</b></td>
+            <td data-testid="payment-${b.bookingRef}">${b.paymentMethod === 'cash' ? 'Cash at pickup' : 'Card'}</td>
             <td><span class="badge ${badge}" data-testid="status-${b.bookingRef}">${b.status}</span></td>
             <td>${canCancel
               ? `<button class="btn btn-sm btn-danger cancel-btn" data-ref="${b.bookingRef}" data-testid="cancel-${b.bookingRef}">Cancel</button>`
