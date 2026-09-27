@@ -64,6 +64,13 @@ async function main() {
     await db.query(fs.readFileSync(path.join(__dirname, '..', 'db', 'schema.sql'), 'utf8'));
     console.log('schema loaded, fleet seeded');
   }
+  // idempotent migration: ensure payment_method column exists on older local DBs
+  await db.query(`DO $do$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                   WHERE table_schema = 'public' AND table_name = 'bookings' AND column_name = 'payment_method') THEN
+      ALTER TABLE bookings ADD COLUMN payment_method VARCHAR(10) NOT NULL DEFAULT 'card';
+    END IF;
+  END $do$;`);
   await db.end();
 
   console.log('database ready on 127.0.0.1:' + PORT);
