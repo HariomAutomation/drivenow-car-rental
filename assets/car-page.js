@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const id = getParam('id');
   if (!id) { renderNotFound(root); return; }
 
+  // carry forward dates/city from the search so booking.html can prefill them
+  const urlFrom = getParam('from');
+  const urlTo = getParam('to');
+  const urlCity = getParam('city');
+  let carryQs = '';
+  if (urlFrom && urlTo) carryQs += `&from=${encodeURIComponent(urlFrom)}&to=${encodeURIComponent(urlTo)}`;
+  if (urlCity) carryQs += `&city=${encodeURIComponent(urlCity)}`;
+
   let car;
   try {
     car = await api('/cars/' + encodeURIComponent(id));
@@ -47,7 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="price-tag" style="font-size:26px" data-testid="car-price">${formatINR(car.pricePerDay)} <span class="per" style="font-size:14px">/ day</span></div>
           <p class="hint" style="margin:6px 0 4px">GST (18%) and any add-ons are shown before you pay.</p>
           <p class="hint" style="margin-bottom:16px">${RULES.cancelWindowNote}.</p>
-          <a class="btn btn-block" href="booking.html?carId=${car.id}" data-testid="book-now-btn">Book Now</a>
+          ${urlFrom && urlTo ? `<p class="hint" style="margin-bottom:8px">Dates from your search: <b>${urlFrom}</b> to <b>${urlTo}</b> (already filled in the booking form)</p>` : ''}
+          <a class="btn btn-block" href="booking.html?carId=${car.id}${carryQs}" data-testid="book-now-btn">Book Now</a>
         </div>
         <div class="card" style="margin-top:16px">
           <h3>Included with every rental</h3>

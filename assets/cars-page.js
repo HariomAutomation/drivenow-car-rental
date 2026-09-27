@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     datesNote.textContent = `Showing availability for ${urlFrom} to ${urlTo} — cars already booked for these dates are hidden.`;
     datesNote.classList.add('show');
   }
+  // carry the search dates/city forward to the car detail and booking pages
+  let searchQs = '';
+  if (urlFrom && urlTo) searchQs += `&from=${encodeURIComponent(urlFrom)}&to=${encodeURIComponent(urlTo)}`;
+  if (urlCity) searchQs += `&city=${encodeURIComponent(urlCity)}`;
 
   const emojiFor = (t) => ({ Hatchback: '🚗', Sedan: '🚙', SUV: '🚐', MPV: '🚐', Luxury: '🏎️' }[t] || '🚗');
 
@@ -88,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="city-list">📍 ${car.cities.map(cityName).join(', ')}</div>
             <div class="car-footer">
               <span class="price-tag">${formatINR(car.pricePerDay)} <span class="per">/ day</span></span>
-              <a class="btn btn-sm" href="car.html?id=${car.id}" data-testid="view-${car.id}">View Details</a>
+              <a class="btn btn-sm" href="car.html?id=${car.id}${searchQs}" data-testid="view-${car.id}">View Details</a>
             </div>
           </div>
         </div>`).join('');
