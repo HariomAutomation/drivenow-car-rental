@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const trip = { city: '', from: '', to: '', days: 0, extras: [], coupon: '' };
+  let currentRef = '';
+  let paidCash = false;
 
   /* ---------- STEP 1 ---------- */
   document.getElementById('trip-form').addEventListener('submit', (e) => {
@@ -243,6 +245,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
       });
       const b = data.booking;
+      currentRef = b.bookingRef;
+      paidCash = b.paymentMethod === 'cash';
 
       document.getElementById('confirm-ref').textContent = b.bookingRef;
       document.getElementById('confirm-email').textContent = getAuth().user.email;
@@ -259,6 +263,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     } finally {
       payBtnEl.disabled = false;
       payBtnEl.textContent = currentPaymentMethod() === 'cash' ? 'Confirm Booking (Pay at Pickup)' : 'Pay & Confirm Booking';
+    }
+  });
+
+  /* ---------- Cancel from the confirmation screen ---------- */
+  const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
+
+  function showCancelNote(msg, isError) {
+    const note = document.getElementById('cancel-note');
+    note.textContent = msg;
+    note.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+    note.style.display = 'block';
+  }
+
+  if (confirmCancelBtn) confirmCancelBtn.addEventListener('click', async () => {
+    if (!currentRef) return;
+    if (!confirm(`Cancel booking ${currentRef}? This cannot be undone.`)) return;
+    confirmCancelBtn.disabled = true;
+    confirmCancelBtn.textContent = 'Cancelling...';
+    try {
+      await api('/bookings/' + encodeURIComponent(currentRef) + '/cancel', { method: 'PATCH' });
+      document.querySelector('#step-confirm .tick').textContent = '\u{274C}';
+      document.querySelector('#step-confirm h2').textContent = 'Booking Cancelled';
+      showCancelNote(paidCash
+        ? 'Booking cancelled. No payment was collected (cash at pickup).'
+        : 'Booking cancelled. Your refund will be processed to the original payment method.');
+      confirmCancelBtn.remove();
+    } catch (err) {
+      confirmCancelBtn.disabled = false;
+      confirmCancelBtn.textContent = 'Cancel this booking';
+      showCancelNote('Could not cancel: ' + err.message, true);
     }
   });
 
