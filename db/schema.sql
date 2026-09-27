@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   discount     INT          NOT NULL,
   gst          INT          NOT NULL,
   total        INT          NOT NULL,
+  payment_method VARCHAR(10) NOT NULL DEFAULT 'card',
   status       VARCHAR(20)  NOT NULL DEFAULT 'CONFIRMED',
   booked_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );

@@ -1,7 +1,7 @@
 /* /api/bookings
  * GET  — list the logged-in user's bookings (newest first). Auth required.
  * POST — create a booking. Auth required.
- *       Body: { carId, city, fromDate, toDate, extras: [], coupon }
+ *       Body: { carId, city, fromDate, toDate, extras: [], coupon, paymentMethod }
  *       201 { booking } | 400 validation | 401 unauthorized | 404 car | 409 date overlap
  */
 const pool = require('../lib/db');
@@ -37,7 +37,8 @@ module.exports = async (req, res) => {
                 c.brand || ' ' || c.model AS "carName", b.city,
                 b.from_date AS "fromDate", b.to_date AS "toDate", b.days,
                 b.extras, b.coupon, b.base, b.extras_total AS "extrasTotal",
-                b.discount, b.gst, b.total, b.status, b.booked_at AS "bookedAt"
+                b.discount, b.gst, b.total, b.payment_method AS "paymentMethod",
+                b.status, b.booked_at AS "bookedAt"
          FROM bookings b JOIN cars c ON c.id = b.car_id
          WHERE b.user_id = $1
          ORDER BY b.booked_at DESC`, [auth.sub]);
@@ -46,7 +47,7 @@ module.exports = async (req, res) => {
 
     /* ---------- POST: create booking ---------- */
     if (req.method === 'POST') {
-      const { carId, city, fromDate, toDate, extras, coupon } = getBody(req);
+      const { carId, city, fromDate, toDate, extras, coupon, paymentMethod } = getBody(req);
 
       if (!carId) return sendError(res, 400, 'carId is required');
       if (!fromDate || !toDate || !ISO_DATE.test(fromDate) || !ISO_DATE.test(toDate))
@@ -71,6 +72,10 @@ module.exports = async (req, res) => {
       if (couponCode && !isValidCoupon(couponCode))
         return sendError(res, 400, 'Invalid coupon code');
 
+      const pm = paymentMethod || 'card';
+      if (!['card', 'cash'].includes(pm))
+        return sendError(res, 400, 'paymentMethod must be card or cash');
+
       // Overlap check — a car can have only one CONFIRMED booking for a date range
       const overlap = await pool.query(
         `SELECT booking_ref FROM bookings
@@ -84,15 +89,17 @@ module.exports = async (req, res) => {
 
       const inserted = await pool.query(
         `INSERT INTO bookings (booking_ref, user_id, car_id, city, from_date, to_date, days,
-                               extras, coupon, base, extras_total, discount, gst, total, status)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,'CONFIRMED')
+                               extras, coupon, base, extras_total, discount, gst, total,
+                               payment_method, status)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'CONFIRMED')
          RETURNING booking_ref AS "bookingRef", car_id AS "carId", city,
                    from_date AS "fromDate", to_date AS "toDate", days, extras, coupon,
-                   base, extras_total AS "extrasTotal", discount, gst, total, status,
+                   base, extras_total AS "extrasTotal", discount, gst, total,
+                   payment_method AS "paymentMethod", status,
                    booked_at AS "bookedAt"`,
         [ref, auth.sub, carId, city, fromDate, toDate, days,
          extrasList, fare.couponApplied ? couponCode : '',
-         fare.base, fare.extrasTotal, fare.discount, fare.gst, fare.total]);
+         fare.base, fare.extrasTotal, fare.discount, fare.gst, fare.total, pm]);
 
       const booking = inserted.rows[0];
       booking.carName = undefined;
