@@ -167,6 +167,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('back-2').addEventListener('click', () => goTo(2));
 
+  /* ---------- Payment method (card / cash) ---------- */
+  const cardFields = document.getElementById('card-fields');
+  const payBtnEl = document.getElementById('pay-btn');
+
+  function currentPaymentMethod() {
+    const checked = document.querySelector('input[name="payment-method"]:checked');
+    return checked ? checked.value : 'card';
+  }
+
+  document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const cash = currentPaymentMethod() === 'cash';
+      cardFields.style.display = cash ? 'none' : '';
+      payBtnEl.textContent = cash ? 'Confirm Booking (Pay at Pickup)' : 'Pay & Confirm Booking';
+    });
+  });
+
   /* ---------- Payment + confirm ---------- */
   document.getElementById('payment-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -179,48 +196,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cvvIn = document.getElementById('p-cvv');
 
     let ok = true;
+    const payCash = currentPaymentMethod() === 'cash';
 
-    if (!nameIn.value.trim()) { setFieldError('p-name', 'Please enter the name on the card.'); ok = false; }
+    if (!payCash) {
+      if (!nameIn.value.trim()) { setFieldError('p-name', 'Please enter the name on the card.'); ok = false; }
 
-    const cardDigits = cardIn.value.replace(/\D/g, '');
-    if (cardDigits.length !== 16) {
-      document.getElementById('err-card').textContent = 'Card number must be exactly 16 digits.';
-      document.getElementById('err-card').closest('.field').classList.add('invalid');
-      ok = false;
-    } else if (!luhnValid(cardDigits)) {
-      document.getElementById('err-card').textContent = 'Card number is invalid. Please double-check it.';
-      document.getElementById('err-card').closest('.field').classList.add('invalid');
-      ok = false;
+      const cardDigits = cardIn.value.replace(/\D/g, '');
+      if (cardDigits.length !== 16) {
+        document.getElementById('err-card').textContent = 'Card number must be exactly 16 digits.';
+        document.getElementById('err-card').closest('.field').classList.add('invalid');
+        ok = false;
+      } else if (!luhnValid(cardDigits)) {
+        document.getElementById('err-card').textContent = 'Card number is invalid. Please double-check it.';
+        document.getElementById('err-card').closest('.field').classList.add('invalid');
+        ok = false;
+      }
+
+      const expMatch = expIn.value.match(/^(0[1-9]|1[0-2])\/(\d{2})$/);
+      let expOk = !!expMatch;
+      if (expOk) {
+        const mm = parseInt(expMatch[1], 10);
+        const yy = 2000 + parseInt(expMatch[2], 10);
+        const endOfMonth = new Date(yy, mm, 0, 23, 59, 59);
+        if (endOfMonth < new Date()) expOk = false;
+      }
+      if (!expOk) {
+        const el = document.getElementById('err-exp');
+        el.textContent = 'Enter a valid expiry (MM/YY) in the future.';
+        el.closest('.field').classList.add('invalid');
+        ok = false;
+      }
+
+      if (!/^\d{3}$/.test(cvvIn.value)) { setFieldError('p-cvv', 'CVV must be exactly 3 digits.'); ok = false; }
     }
-
-    const expMatch = expIn.value.match(/^(0[1-9]|1[0-2])\/(\d{2})$/);
-    let expOk = !!expMatch;
-    if (expOk) {
-      const mm = parseInt(expMatch[1], 10);
-      const yy = 2000 + parseInt(expMatch[2], 10);
-      const endOfMonth = new Date(yy, mm, 0, 23, 59, 59);
-      if (endOfMonth < new Date()) expOk = false;
-    }
-    if (!expOk) {
-      const el = document.getElementById('err-exp');
-      el.textContent = 'Enter a valid expiry (MM/YY) in the future.';
-      el.closest('.field').classList.add('invalid');
-      ok = false;
-    }
-
-    if (!/^\d{3}$/.test(cvvIn.value)) { setFieldError('p-cvv', 'CVV must be exactly 3 digits.'); ok = false; }
     if (!ok) return;
 
     // Confirm with the server — it re-validates everything (source of truth)
-    const payBtn = document.getElementById('pay-btn');
-    payBtn.disabled = true;
-    payBtn.textContent = 'Processing…';
+    payBtnEl.disabled = true;
+    payBtnEl.textContent = 'Processing…';
     try {
       const data = await api('/bookings', {
         method: 'POST',
         body: JSON.stringify({
           carId: car.id, city: trip.city, fromDate: trip.from, toDate: trip.to,
-          extras: trip.extras, coupon: trip.coupon
+          extras: trip.extras, coupon: trip.coupon, paymentMethod: currentPaymentMethod()
         })
       });
       const b = data.booking;
@@ -238,8 +257,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       showPageError(err.message);
     } finally {
-      payBtn.disabled = false;
-      payBtn.textContent = 'Pay & Confirm Booking';
+      payBtnEl.disabled = false;
+      payBtnEl.textContent = currentPaymentMethod() === 'cash' ? 'Confirm Booking (Pay at Pickup)' : 'Pay & Confirm Booking';
     }
   });
 
