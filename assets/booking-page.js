@@ -267,5 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlTo = getParam('to');
   if (urlFrom) fromIn.value = urlFrom;
   if (urlTo) toIn.value = urlTo;
+  const urlCity = getParam('city');
+  if (urlCity && car.cities.includes(urlCity)) citySel.value = urlCity;
   updateDaysLine();
 });
